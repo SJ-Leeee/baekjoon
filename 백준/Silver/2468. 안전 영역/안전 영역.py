@@ -31,13 +31,13 @@ def safe_area(arr, N, limit):
 
 
 def safe_area_helper(arr, x, y, N):
-    direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    dc = [(1, 0), (-1, 0), (0, 1), (0, -1)]
     # 일단 False로 둬야한다.
     arr[x][y] = False
 
-    for dr, dc in direction:
-        next_x = x + dr
-        next_y = y + dc
+    for dy, dx in dc:
+        next_x = x + dy
+        next_y = y + dx
         if 0 <= next_x < N and 0 <= next_y < N:
             if arr[next_x][next_y] == True:
                 safe_area_helper(arr, next_x, next_y, N)
@@ -46,12 +46,12 @@ def safe_area_helper(arr, x, y, N):
 
 N = int(input())
 data = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
-max_val = max(map(max, data))
-max_conut = 0
-for i in range(max_val):
+max_height = max(map(max, data))
+max_count = 0
+for limit in range(max_height):
     squre = copy.deepcopy(data)
-    count = safe_area(squre, N, i)
-    max_conut = max(count, max_conut)
+    count = safe_area(squre, N, limit)
+    max_count = max(count, max_count)
 
 # max_val = 0인경우
-print(max_conut)
+print(max_count)
