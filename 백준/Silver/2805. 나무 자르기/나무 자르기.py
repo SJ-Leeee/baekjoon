@@ -1,34 +1,27 @@
 import sys
 
-# 만약 나무가 한개면
-# start 10
-# end 10
-# mid 10
+def sum_woods(woods, cut):
+    result = 0
+    for wood in woods:
+        if wood > cut:
+            result += wood - cut
+    return result
 
 
-def binary_search_value(arr, low, top, goal_value):
-    if low > top:  # 범위가 끝났을 때
-        return low - 1  # 마지막으로 가능했던 높이 반환
+N, need = map(int, sys.stdin.readline().split())
+wood_list = list(map(int, sys.stdin.readline().split()))
 
-    mid_value = (low + top) // 2
-    # 잘 맞던가 2차이로 좁혀지네
+wood_list.sort()
+left = 0
+right = wood_list[-1]
+while left < right:
+    mid = (left + right) // 2
+    target = sum_woods(wood_list, mid)
 
-    w_sum = 0
-    for i in range(len(arr) - 1, -1, -1):  # 어차피 맨 끝부터 자르기때문에 변하지않ㅇ음
-        if arr[i] <= mid_value:  # 자를 수 있는 나무만
-            break
-        w_sum += arr[i] - mid_value
-
-    if w_sum >= goal_value:
-        return binary_search_value(arr, mid_value + 1, top, goal_value)
+    if need < target:
+        left = mid + 1
     else:
-        return binary_search_value(arr, low, mid_value - 1, goal_value)
-
-
-N, goal_value = map(int, sys.stdin.readline().split())
-data = list(map(int, sys.stdin.readline().split()))
-data.sort()
-
-
-a = binary_search_value(data, 0, data[-1], goal_value)
-print(a)
+        right = mid
+if sum_woods(wood_list, left) < need:
+    left = left - 1
+print(left)
