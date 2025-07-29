@@ -1,47 +1,28 @@
-# 3 2
-# 1 3
-# 2 3
-
 from collections import deque
 import sys
 
-
-def dfs(graph, indgree):
+def topological_sort(graph, indegree):
+    queue = deque([i for i in range(1, len(indegree)) if indegree[i] == 0])
     result = []
-    visited = set()
-    dq = deque()
-    for i in range(1, len(indgree)):
-        if not indgree[i]:
-            dq.append(i)
-
-    while dq:
-        ver = dq.popleft()
-
-        if ver in visited:
-            continue
-
-        result.append(ver)
-        visited.add(ver)
-
-        for i in graph[ver]:
-            indgree[i] -= 1
-            if not indgree[i]:
-                dq.append(i)
-
+    
+    while queue:
+        node = queue.popleft()
+        result.append(node)
+        
+        for neighbor in graph[node]:
+            indegree[neighbor] -= 1
+            if indegree[neighbor] == 0:
+                queue.append(neighbor)
+    
     print(*result)
 
-
 V, E = map(int, sys.stdin.readline().split())
-
-indgree = [0] * (V + 1)
-
-graph = {}
-for i in range(1, V + 1):
-    graph[i] = []
+indegree = [0] * (V + 1)
+graph = [[] for _ in range(V + 1)]
 
 for _ in range(E):
-    v1, v2 = map(int, sys.stdin.readline().split())
-    graph[v1].append(v2)
-    indgree[v2] += 1
+    u, v = map(int, sys.stdin.readline().split())
+    graph[u].append(v)
+    indegree[v] += 1
 
-dfs(graph, indgree)
+topological_sort(graph, indegree)
