@@ -1,30 +1,26 @@
 
 import sys
 
-# {10, 20, 30, 15, 20, 30, 50, 40, 45 ,60}
+N = int(sys.stdin.readline())
+data = list(map(int, sys.stdin.readline().split()))
 
-lis = []
-
-N = int(sys.stdin.readline().strip())
-arr = list(map(int, sys.stdin.readline().strip().split()))
-
-lis.append(arr[0])
-
-for i in range(1, len(arr)):
-    if lis[-1] < arr[i]:
-        lis.append(arr[i])
+lis = [data[0]]
+for i in range(1, len(data)):
+    if data[i] > lis[-1]:
+        lis.append(data[i])
     else:
-        right = len(lis)
         left = 0
+        right = len(lis)
 
         while left < right:
-            mid = (right + left) // 2
+            mid = (left + right) // 2
 
-            if lis[mid] < arr[i]:  # arr[i] 15가 크다면
+            if data[i] > lis[mid]:
                 left = mid + 1
             else:
                 right = mid
-        lis[left] = arr[i]
+
+        lis[left] = data[i]
+
 
 print(len(lis))
-
