@@ -1,18 +1,21 @@
 import sys
 
+
 N = int(sys.stdin.readline())
-
-data = []
-for i in range(N):
+meeting_room = []
+for _ in range(N):
     start, end = map(int, sys.stdin.readline().split())
-    data.append((start, end))
+    meeting_room.append((start, end))
 
-data.sort(key=lambda x: (x[1], x[0]))  # 끝나는시간 먼저, 같으면 시작시간이 먼저
-end_point = -1
-result = 0
-for start, end in data:
-    if start >= end_point:
-        result += 1
-        end_point = end
 
-print(result)
+meeting_room.sort(key=lambda x: (x[1], x[0]))
+
+
+recent_end = meeting_room[0][1]
+cnt = 1
+for i in range(1, N):
+    if meeting_room[i][0] >= recent_end:
+        cnt += 1
+        recent_end = meeting_room[i][1]
+
+print(cnt)
