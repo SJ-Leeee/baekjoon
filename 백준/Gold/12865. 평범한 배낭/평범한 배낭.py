@@ -1,27 +1,22 @@
-# # 4 7
-# # 6 13
-# # 4 8
-# # 3 6
-# # 5 12
 
 import sys
 
 
-N, WEIGHT = map(int, sys.stdin.readline().split())
+I, K = map(int, sys.stdin.readline().split())
+items = []
+for _ in range(I):
+    kg, val = map(int, sys.stdin.readline().split())
+    items.append((kg, val))
 
-items = [(0, 0)]
-for _ in range(N):
-    weight, value = map(int, sys.stdin.readline().split())
-    items.append((weight, value))
-dp = [[0 for _ in range(WEIGHT + 1)] for _ in range(len(items))]
+dp = [[0 for _ in range(K + 1)] for _ in range(len(items) + 1)]
 
-for i in range(len(items)):
-    for w in range(WEIGHT + 1):
-        item_weight = items[i][0]
-        item_value = items[i][1]
-        if item_weight > w:
-            dp[i][w] = dp[i - 1][w]
+
+for i in range(1, len(items) + 1):
+    kg, val = items[i - 1]
+    for k in range(K + 1):
+        if kg > k:
+            dp[i][k] = dp[i - 1][k]
         else:
-            dp[i][w] = max(dp[i - 1][w], item_value + dp[i - 1][w - item_weight])
+            dp[i][k] = max(dp[i - 1][k - kg] + val, dp[i - 1][k])
 
-print(dp[N][WEIGHT])
+print(dp[-1][-1])
