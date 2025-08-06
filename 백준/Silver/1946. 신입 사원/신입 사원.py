@@ -1,21 +1,21 @@
+
 import sys
 
 
 N = int(sys.stdin.readline())
+
 for _ in range(N):
-    p_N = int(sys.stdin.readline())
-    people_grade = []
-    for _ in range(p_N):
-        r1, r2 = map(int, sys.stdin.readline().split())
-        people_grade.append((r1, r2))
+    M = int(sys.stdin.readline())
+    newbi = []
+    for _ in range(M):
+        interview, resume = map(int, sys.stdin.readline().split())
+        newbi.append((interview, resume))
 
-    people_grade.sort()
-
+    newbi.sort()
+    cut_line = newbi[0][1]
     cnt = 1
-    min_interview = people_grade[0][1]
-    for i in range(1, len(people_grade)):
-        if people_grade[i][1] < min_interview:
+    for i in range(1, M):
+        if newbi[i][1] < cut_line:
             cnt += 1
-            min_interview = people_grade[i][1]
-
+            cut_line = newbi[i][1]
     print(cnt)
